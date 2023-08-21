@@ -24,9 +24,6 @@ function playRound(e) {
     const computerChoice = getComputerChoice();
     const detailText = "You chose " + playerChoice + " and computer chose " + computerChoice;
 
-    console.log("player: " + playerChoice);
-    console.log("computer: " + computerChoice)
-
     const matchup = playerChoice + "-" + computerChoice;
     const win = ["rock-scissors", "scissors-paper", "paper-rock"];
     const draw = ["rock-rock", "scissors-scissors", "paper-paper"];
