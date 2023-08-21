@@ -8,80 +8,106 @@ function getComputerChoice() {
     return options[key]
 };
 
-function playRound(playerSelection, computerSelection) {
-    let pLower = playerSelection.toLowerCase()
-    let matchup = pLower + "-" + computerSelection
-    let winner = "c"
-    let win = ["rock-scissors", "scissors-paper", "paper-rock"]
-    let draw = ["rock-rock", "scissors-scissors", "paper-paper"]
+let pscore = 0
+let cscore = 0
+
+const buttons = document.querySelectorAll(".btn");
+buttons.forEach(button => button.addEventListener('click', playRound));
+
+function playRound(e) {
+    const container = document.querySelector(".currentround");
+    while (container.firstChild) {
+        container.removeChild(container.firstChild);
+    };
+
+    const playerChoice = Array.from(e.srcElement.classList).filter((word) => word !== "btn").pop().toLowerCase();
+    const computerChoice = getComputerChoice();
+    const detailText = "You chose " + playerChoice + " and computer chose " + computerChoice;
+
+    console.log("player: " + playerChoice);
+    console.log("computer: " + computerChoice)
+
+    const matchup = playerChoice + "-" + computerChoice;
+    const win = ["rock-scissors", "scissors-paper", "paper-rock"];
+    const draw = ["rock-rock", "scissors-scissors", "paper-paper"];
+
     if (win.includes(matchup)) {
-        console.log("You win! " + playerSelection + " beats " + computerSelection + "!")
-        winner = "p"
+        const winner = "p"
+
+        const title = document.createElement("h2");
+        title.textContent = "Round detail:";
+        container.appendChild(title);
+
+        const header = document.createElement("h3");
+        header.textContent = "You win!!!";
+        container.appendChild(header);
+
+        const detail = document.createElement("div");
+        detail.textContent = detailText;
+        container.appendChild(detail);
+
+        pscore += 1
+
     } else if (draw.includes(matchup)) {
-        console.log("Draw! Nobody wins.")
-        winner = "d"
+        const winner = "d"
+
+        const title = document.createElement("h2");
+        title.textContent = "Round detail:";
+        container.appendChild(title);
+
+        const header = document.createElement("h3");
+        header.textContent = "Draw!!!";
+        container.appendChild(header);
+
+        const detail = document.createElement("div");
+        detail.textContent = detailText;
+        container.appendChild(detail);
+
     } else {
-        console.log("You lose! " + computerSelection + " beats " + playerSelection + "!")
-    }
-    return winner
-}
+        const winner = "c"
 
-// const playerSelection = "rock"
-// const computerSelection = getComputerChoice()
-// console.log(computerSelection)
-// console.log(playRound(playerSelection, computerSelection))
+        const title = document.createElement("h2");
+        title.textContent = "Round detail:";
+        container.appendChild(title);
 
-function game() {
-    let pScore = 0
-    let cScore = 0
-    let roundResult = "d"
+        const header = document.createElement("h3");
+        header.textContent = "You lose!!!";
+        container.appendChild(header);
 
-    roundResult = playRound(prompt("Round 1:  What's your selection?"), getComputerChoice())
-    if (roundResult === "p") {
-        pScore = pScore + 1
-    } else if (roundResult === "c") {
-        cScore = cScore + 1
+        const detail = document.createElement("div");
+        detail.textContent = detailText;
+        container.appendChild(detail);
+
+        cscore += 1
     }
 
-    roundResult = playRound(prompt("Round 2:  What's your selection?"), getComputerChoice())
-    if (roundResult === "p") {
-        pScore = pScore + 1
-    } else if (roundResult === "c") {
-        cScore = cScore + 1
-    }
+    const pScoreDisp = document.querySelector(".score.player")
+    const cScoreDisp = document.querySelector(".score.computer")
 
-    roundResult = playRound(prompt("Round 3:  What's your selection?"), getComputerChoice())
-    if (roundResult === "p") {
-        pScore = pScore + 1
-    } else if (roundResult === "c") {
-        cScore = cScore + 1
-    }
+    pScoreDisp.innerHTML = "Your score: " + pscore
+    cScoreDisp.innerHTML = "Computer score: " + cscore
 
-    roundResult = playRound(prompt("Round 4:  What's your selection?"), getComputerChoice())
-    if (roundResult === "p") {
-        pScore = pScore + 1
-    } else if (roundResult === "c") {
-        cScore = cScore + 1
-    }
-
-    roundResult = playRound(prompt("Round 5:  What's your selection?"), getComputerChoice())
-    if (roundResult === "p") {
-        pScore = pScore + 1
-    } else if (roundResult === "c") {
-        cScore = cScore + 1
-    }
-
-    let message = ""
-
-    if (pScore > cScore) {
-        message = "You win " + pScore + " rounds to " + cScore + "!"
-    } else if (cScore > pScore) {
-        message = "You lose " + pScore + " rounds to " + cScore + "!"
-    } else {
-        message = "Draw! " + pScore + " to " + cScore
+    if (pscore === 5) {
+        game = document.querySelector(".game")
+        while (game.firstChild) {
+            game.removeChild(game.firstChild);
+        };
+    
+        result = document.createElement("h1")
+        result.textContent = "CONGRATULATIONS!!! You Win!"
+        game.appendChild(result)
     }
     
-    return message
-};
+    if (cscore === 5) {
+        game = document.querySelector(".game")
+        while (game.firstChild) {
+            game.removeChild(game.firstChild);
+        };
+    
+        result = document.createElement("h1")
+        result.textContent = "You lose!  Better luck next time!"
+        game.appendChild(result)
+    }
+}
 
-console.log(game("rock"))
+
